@@ -27,7 +27,7 @@ class Game(object):
         # Create the menu of the game
         #self.menu = Menu(("Start","About","Exit"),font_color = WHITE,font_size=60)
         # Create the player
-        self.player = Player(32,128,"resources\player.png")
+        self.player = Player(32,128,".\media\player.png")
         # Create the blocks that will set the paths where the player can go
         self.horizontal_blocks = pygame.sprite.Group()
         self.vertical_blocks = pygame.sprite.Group()
@@ -57,8 +57,8 @@ class Game(object):
                     self.dots_group.add(Ellipse(j*32+12,i*32+12,WHITE,8,8))
 
         # Load the sound effects
-        self.pacman_sound = pygame.mixer.Sound("resources\pacman_sound.ogg")
-        self.game_over_sound = pygame.mixer.Sound("resources\game_over_sound.ogg")
+        self.pacman_sound = pygame.mixer.Sound(".\media\pacman_sound.ogg")
+        self.game_over_sound = pygame.mixer.Sound(".\media\game_over_sound.ogg")
 
 
     def process_events(self):
