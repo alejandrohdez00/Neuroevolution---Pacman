@@ -191,7 +191,7 @@ class Game(object):
         
         start_time = time.time()
         # -------- Main Program Loop -----------
-        while not done:
+        while not done and self.score < 156:
             # --- Process events (keystrokes, mouse clicks, etc)
             done = self.process_events()
             # --- Game logic should go here
