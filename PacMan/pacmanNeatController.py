@@ -19,6 +19,37 @@ class PacmanGame:
 
         """
         run = True
+
+        net = neat.nn.FeedForwardNetwork.create(genome, config)
+     
+        self.genome = genome
+      
+
+        while run:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    return True
+
+            score = self.game.loop(self.screen, self.clock)
+
+            #Store the positions of player and enemies to pass them as inputs
+            
+            positions = [x.rect.center for x in self.game.enemies]
+            positions.append(self.game.player.rect.center)
+            input_positions = tuple(chain(*positions))
+
+            self.move_ai(net, input_positions)
+
+            pygame.display.update()
+
+        return False
+
+    def train_ai(self, genome, config):
+        """
+        Train the AI by passing a neural networks and the NEAt config object.
+
+        """
+        run = True
         
         start_time = time.time()
 
