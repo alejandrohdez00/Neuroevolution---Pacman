@@ -130,7 +130,7 @@ class Game(object):
                 # Here will be the sound effect
                 self.pacman_sound.play()
                 self.score += 1
-            block_hit_list = pygame.sprite.spritecollide(self.player,self.enemies,True)
+            block_hit_list = pygame.sprite.spritecollide(self.player,self.enemies,False)
             if len(block_hit_list) > 0:
                 self.player.explosion = True
                 self.game_over_sound.play()
@@ -181,33 +181,42 @@ class Game(object):
         # Draw the label onto the screen
         screen.blit(label,(posX,posY))
 
-    def loop(self,screen):
-         # Set the current window caption
-        pygame.display.set_caption("PACMAN")
-        #Loop until the user clicks the close button.
-        done = False
-        # Used to manage how fast the screen updates
-        clock = pygame.time.Clock()
+    # def loop(self,screen):
+    #      # Set the current window caption
+    #     pygame.display.set_caption("PACMAN")
+    #     #Loop until the user clicks the close button.
+    #     done = False
+    #     # Used to manage how fast the screen updates
+    #     clock = pygame.time.Clock()
         
-        start_time = time.time()
-        # -------- Main Program Loop -----------
-        while not done and self.score < 156:
-            # --- Process events (keystrokes, mouse clicks, etc)
-            done = self.process_events()
-            # --- Game logic should go here
+    #     start_time = time.time()
+    #     # -------- Main Program Loop -----------
+    #     while not done and self.score < 156:
+    #         # --- Process events (keystrokes, mouse clicks, etc)
+    #         done = self.process_events()
+    #         # --- Game logic should go here
+    #         self.run_logic()
+    #         # --- Draw the current frame
+    #         self.display_frame(screen)
+    #         # --- Limit to 30 frames per second
+    #         clock.tick(30)
+    #         #tkMessageBox.showinfo("GAME OVER!","Final Score = "+(str)(GAME.score))
+    #     # Close the window and quit.
+    #     # If you forget this line, the program will 'hang'
+    #     # on exit if running from IDLE.
+    #     end_time = time.time()
+    #     inf = (self.score, end_time - start_time)
+    #     return inf
+    #     pygame.quit()
+
+    def loop(self, screen, clock):
+        done = self.process_events()
+        if(not done and self.score < 156):
             self.run_logic()
-            # --- Draw the current frame
             self.display_frame(screen)
-            # --- Limit to 30 frames per second
             clock.tick(30)
-            #tkMessageBox.showinfo("GAME OVER!","Final Score = "+(str)(GAME.score))
-        # Close the window and quit.
-        # If you forget this line, the program will 'hang'
-        # on exit if running from IDLE.
-        end_time = time.time()
-        inf = (self.score, end_time - start_time)
-        return inf
-        pygame.quit()
+        return self.score
+
 
 
 class Menu(object):
