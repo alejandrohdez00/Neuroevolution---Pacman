@@ -3,8 +3,11 @@ from game import Game
 import neat
 import time
 from itertools import chain
+import pickle
 
 MAX_TIME = 60
+SCREEN_WIDTH = 800
+SCREEN_HEIGHT = 576
 
 class PacmanGame:
 
@@ -13,7 +16,7 @@ class PacmanGame:
         self.screen = screen
         self.clock = clock
 
-    def train_ai(self, genome, config):
+    def test_ai(self, genome, config):
         """
         Train the AI by passing a neural networks and the NEAt config object.
 
@@ -96,16 +99,16 @@ class PacmanGame:
             self.game.player.move_down()
         elif decision == 3: #Move right
             self.game.player.move_right()
-        elif decision == 4:
-            self.game.player.move_left()
-        elif decision == 5:
-            self.game.player.stop_move_up()
-        elif decision == 6:
-            self.game.player.stop_move_down()
-        elif decision == 7:
-            self.game.player.stop_move_right()
         else:
-            self.game.player.stop_move_left()
+            self.game.player.move_left()
+        # elif decision == 5:
+        #     self.game.player.stop_move_up()
+        # elif decision == 6:
+        #     self.game.player.stop_move_down()
+        # elif decision == 7:
+        #     self.game.player.stop_move_right()
+        # else:
+        #     self.game.player.stop_move_left()
 
         # if not valid:  # If the movement makes the paddle go off the screen punish the AI
         #     self.genome.fitness -= 1
@@ -115,3 +118,16 @@ class PacmanGame:
             self.genome.fitness += score 
         else:
             self.genome.fitness += score - 0.2 * duration
+
+
+    def test_best_network(config):
+        with open("best.pickle", "rb") as f:
+            winner = pickle.load(f)
+        winner_net = neat.nn.FeedForwardNetwork.create(winner, config)
+
+        screen = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT))
+        pygame.display.set_caption("PACMAN")
+        clock = pygame.time.Clock()
+
+        pacman = PacmanGame(screen, clock)
+        pacman.test_ai(winner_net)
