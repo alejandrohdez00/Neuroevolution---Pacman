@@ -6,6 +6,7 @@ import neat
 import pickle
 import visualization as vis
 
+
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 576
 
@@ -32,14 +33,12 @@ def run_neat(config):
     p.add_reporter(neat.StdOutReporter(True))
     stats = neat.StatisticsReporter()
     p.add_reporter(stats)
-    p.add_reporter(neat.Checkpointer(generation_interval=2, time_interval_seconds=None, filename_prefix = ".\First model\checkpoint - "))
-    #vis.plot_species(stats)
+    p.add_reporter(neat.Checkpointer(generation_interval=10, time_interval_seconds=None, filename_prefix = ".\First model\checkpoint - "))
 
-    winner = p.run(eval_genomes, 1)
+    winner = p.run(eval_genomes, 200)
     
     #Visualize winner
-    #vis.draw_net(config, winner, True)
-    #vis.draw_net(config, winner, True, prune_unused=True)
+    vis.draw_net(config, winner, True)
     vis.plot_stats(stats, ylog=False, view=True)
     vis.plot_species(stats, view=True)
 
@@ -69,4 +68,4 @@ if __name__ == '__main__':
                          config_path)
 
     run_neat(config)
-    test_best_network(config)
+    #test_best_network(config)
