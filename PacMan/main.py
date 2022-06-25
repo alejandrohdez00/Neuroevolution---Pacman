@@ -27,19 +27,19 @@ def eval_genomes(genomes, config):
 
 
 def run_neat(config):
-    p = neat.Checkpointer.restore_checkpoint('.\Third Model - Recurrent\checkpoint - 154')
-    #p = neat.Population(config)
+    #p = neat.Checkpointer.restore_checkpoint('.\Third Model - Recurrent\checkpoint - 154')
+    p = neat.Population(config)
     p.add_reporter(neat.StdOutReporter(True))
     stats = neat.StatisticsReporter()
     p.add_reporter(stats)
-    p.add_reporter(neat.Checkpointer(generation_interval=10, filename_prefix = ".\Third Model - Recurrent\checkpoint - "))
+    p.add_reporter(neat.Checkpointer(generation_interval=2, time_interval_seconds=None, filename_prefix = ".\First model\checkpoint - "))
     #vis.plot_species(stats)
 
-    winner = p.run(eval_genomes, 500)
+    winner = p.run(eval_genomes, 1)
     
     #Visualize winner
-    vis.draw_net(config, winner, True)
-    vis.draw_net(config, winner, True, prune_unused=True)
+    #vis.draw_net(config, winner, True)
+    #vis.draw_net(config, winner, True, prune_unused=True)
     vis.plot_stats(stats, ylog=False, view=True)
     vis.plot_species(stats, view=True)
 
@@ -56,7 +56,7 @@ def test_best_network(config):
         clock = pygame.time.Clock()
 
         pacman = PacmanGame(screen, clock)
-        pacman.test_ai(winner_net)
+        pacman.test_ai(winner_net, config)
 
 
 if __name__ == '__main__':
@@ -69,4 +69,4 @@ if __name__ == '__main__':
                          config_path)
 
     run_neat(config)
-    #test_best_network(config)
+    test_best_network(config)
