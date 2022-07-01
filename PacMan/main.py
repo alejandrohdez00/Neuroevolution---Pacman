@@ -28,12 +28,12 @@ def eval_genomes(genomes, config):
 
 
 def run_neat(config):
-    #p = neat.Checkpointer.restore_checkpoint('.\Third Model - Recurrent\checkpoint - 154')
+    #p = neat.Checkpointer.restore_checkpoint('.\Third model\checkpoint - 199')
     p = neat.Population(config)
     p.add_reporter(neat.StdOutReporter(True))
     stats = neat.StatisticsReporter()
     p.add_reporter(stats)
-    p.add_reporter(neat.Checkpointer(generation_interval=10, time_interval_seconds=None, filename_prefix = ".\First model\checkpoint - "))
+    p.add_reporter(neat.Checkpointer(generation_interval=10, time_interval_seconds=None, filename_prefix = ".\Fourth model\checkpoint - "))
 
     winner = p.run(eval_genomes, 200)
     
@@ -46,7 +46,7 @@ def run_neat(config):
         pickle.dump(winner, f)
 
 def test_best_network(config):
-        with open("best.pickle", "rb") as f:
+        with open(".\First model\\best.pickle", "rb") as f:
             winner = pickle.load(f)
         winner_net = neat.nn.FeedForwardNetwork.create(winner, config)
 

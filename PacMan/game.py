@@ -10,6 +10,7 @@ import time
 
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 576
+FPS = 300
 
 pygame.init()
 
@@ -211,10 +212,10 @@ class Game(object):
 
     def loop(self, screen, clock):
         done = self.process_events()
-        if(not done and self.score < 156):
+        if(not done and self.score < 206):
             self.run_logic()
             self.display_frame(screen)
-            clock.tick(30)
+            clock.tick(FPS)
         return self.score
 
 

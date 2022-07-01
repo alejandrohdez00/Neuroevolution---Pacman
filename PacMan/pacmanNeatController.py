@@ -5,7 +5,7 @@ import time
 from itertools import chain
 import pickle
 
-MAX_TIME = 60
+FPS = 300
 TIME_WEIGHT = 0.2
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 576
@@ -53,7 +53,8 @@ class PacmanGame:
         
         start_time = time.time()
 
-        net = neat.nn.FeedForwardNetwork.create(genome, config)
+        #net = neat.nn.FeedForwardNetwork.create(genome, config)
+        net = neat.nn.RecurrentNetwork.create(genome, config)
      
         self.genome = genome
       
@@ -76,7 +77,7 @@ class PacmanGame:
             pygame.display.update()
 
             duration = time.time() - start_time
-            if score >= 206 or duration >= MAX_TIME or self.game.game_over:
+            if score >= 206 or self.game.game_over:
                 self.calculate_fitness(score, duration)
                 break
 
@@ -88,24 +89,16 @@ class PacmanGame:
         output = net.activate(positions)
         decision = output.index(max(output))
 
-        if decision == 0:  # Don't move
-            self.genome.fitness -= 0.01  # we want to discourage this
-        elif decision == 1:  # Move up
+        if decision == 0:  # Move up
             self.game.player.move_up()
-        elif decision == 2:  # Move down
+        elif decision == 1:  # Move down
             self.game.player.move_down()
-        elif decision == 3: #Move right
+        elif decision == 2:  # Move right
             self.game.player.move_right()
-        else:
+        elif decision == 3: #Move left
             self.game.player.move_left()
 
 
     def calculate_fitness(self, score, duration):
-        if duration == MAX_TIME:
-            self.genome.fitness += score 
-        else:
-            self.genome.fitness += score - TIME_WEIGHT * duration
-
-
-
-    
+            self.genome.fitness += score - TIME_WEIGHT * (duration * (FPS/30))
+            
