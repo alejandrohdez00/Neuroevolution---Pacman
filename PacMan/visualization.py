@@ -144,14 +144,14 @@ def draw_net(config, genome, view=False, filename=None, node_names=None, show_di
     for k in config.genome_config.input_keys:
         inputs.add(k)
         name = node_names.get(k, str(k))
-        input_attrs = {'style': 'filled', 'shape': 'box', 'fillcolor': node_colors.get(k, 'lightgray')}
+        input_attrs = {'style': 'filled', 'shape': 'circle', 'fillcolor': node_colors.get(k, 'lightcoral'), 'height': '0.6', 'width': '0.6'}
         dot.node(name, _attributes=input_attrs)
 
     outputs = set()
     for k in config.genome_config.output_keys:
         outputs.add(k)
         name = node_names.get(k, str(k))
-        node_attrs = {'style': 'filled', 'fillcolor': node_colors.get(k, 'lightblue')}
+        node_attrs = {'style': 'filled', 'fillcolor': node_colors.get(k, 'lightblue'), 'height': '0.6', 'width': '0.6'}
 
         dot.node(name, _attributes=node_attrs)
 
@@ -161,7 +161,7 @@ def draw_net(config, genome, view=False, filename=None, node_names=None, show_di
             continue
 
         attrs = {'style': 'filled',
-                 'fillcolor': node_colors.get(n, 'white')}
+                 'fillcolor': node_colors.get(n, 'lightgreen'), 'height': '0.6', 'width': '0.6'}
         dot.node(str(n), _attributes=attrs)
 
     for cg in genome.connections.values():
@@ -174,8 +174,10 @@ def draw_net(config, genome, view=False, filename=None, node_names=None, show_di
             style = 'solid' if cg.enabled else 'dotted'
             color = 'green' if cg.weight > 0 else 'red'
             width = str(0.1 + abs(cg.weight / 5.0))
-            dot.edge(a, b, _attributes={'style': style, 'color': color, 'penwidth': width})
+            dot.edge(a, b, _attributes={'style': style, 'color': color, 'penwidth': width, 'arrowhead': 'none'})
 
     dot.render(filename, view=view)
 
     return dot
+
+
