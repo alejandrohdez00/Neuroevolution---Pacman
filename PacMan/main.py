@@ -20,7 +20,7 @@ def eval_genomes(genomes, config):
     clock = pygame.time.Clock()
 
     for i, (genome_id, genome) in enumerate(genomes):
-        genome.fitness = 0
+        genome.evaluations += 1
         pacman = PacmanGame(screen, clock)
 
         force_quit = pacman.train_ai(genome, config)

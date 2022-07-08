@@ -115,16 +115,11 @@ class PacmanGame:
 
             #Store euclid distance of player and enemies to pass them as inputs and corridors for enemies and players and score_increased
 
-            positions = [x.rect.center for x in self.game.enemies]
             distances = [euclidean(x.rect.center, self.game.player.rect.center) for x in self.game.enemies]
             corridors = [calc_corridor(x.rect.center[0], x.rect.center[1]) for x in self.game.enemies]
             corridors.append(calc_corridor(self.game.player.rect.center[0], self.game.player.rect.center[1]))
             
             inputs = tuple(distances) + tuple(corridors) + (score_increased,)
-            print(positions)
-            print(inputs)
-
-            
 
             self.move_ai(net, inputs)
 
@@ -154,5 +149,8 @@ class PacmanGame:
 
 
     def calculate_fitness(self, score, duration):
-            self.genome.fitness += score - TIME_WEIGHT * (duration * (FPS/30))
+        self.genome.raw_fitness += score - TIME_WEIGHT * (duration * (FPS/30))
+        self.genome.fitness = self.genome.raw_fitness / self.genome.evaluations
+
+ 
             
