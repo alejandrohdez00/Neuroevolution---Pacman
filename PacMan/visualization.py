@@ -136,7 +136,8 @@ def draw_net(config, genome, view=False, filename=None, node_names=None, show_di
         'shape': 'circle',
         'fontsize': '9',
         'height': '0.2',
-        'width': '0.2'}
+        'width': '0.2',
+        'bgcolor': 'black'}
 
     dot = graphviz.Digraph(format=fmt, node_attr=node_attrs)
 
@@ -144,14 +145,14 @@ def draw_net(config, genome, view=False, filename=None, node_names=None, show_di
     for k in config.genome_config.input_keys:
         inputs.add(k)
         name = node_names.get(k, str(k))
-        input_attrs = {'style': 'filled', 'shape': 'circle', 'fillcolor': node_colors.get(k, 'lightcoral'), 'height': '0.6', 'width': '0.6'}
+        input_attrs = {'style': 'filled', 'shape': 'circle', 'fillcolor': node_colors.get(k, 'lightcoral')}
         dot.node(name, _attributes=input_attrs)
 
     outputs = set()
     for k in config.genome_config.output_keys:
         outputs.add(k)
         name = node_names.get(k, str(k))
-        node_attrs = {'style': 'filled', 'fillcolor': node_colors.get(k, 'lightblue'), 'height': '0.6', 'width': '0.6'}
+        node_attrs = {'style': 'filled', 'fillcolor': node_colors.get(k, 'lightblue')}
 
         dot.node(name, _attributes=node_attrs)
 
@@ -161,7 +162,7 @@ def draw_net(config, genome, view=False, filename=None, node_names=None, show_di
             continue
 
         attrs = {'style': 'filled',
-                 'fillcolor': node_colors.get(n, 'lightgreen'), 'height': '0.6', 'width': '0.6'}
+                 'fillcolor': node_colors.get(n, 'lightgreen')}
         dot.node(str(n), _attributes=attrs)
 
     for cg in genome.connections.values():
