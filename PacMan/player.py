@@ -1,4 +1,6 @@
 import pygame
+import enemies
+from math import dist
 
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 576
@@ -19,6 +21,8 @@ class Player(pygame.sprite.Sprite):
         self.image.set_colorkey(BLACK)
         self.rect = self.image.get_rect()
         self.rect.topleft = (x,y)
+        #Get intersections positions
+        self.intersections = enemies.get_intersection_position()
         # Load image which will be for the animation
         img = pygame.image.load("Pacman\media\walk.png").convert()
         # Create the animations objects
@@ -32,6 +36,7 @@ class Player(pygame.sprite.Sprite):
         # Save the player image
         self.player_image = pygame.image.load(filename).convert()
         self.player_image.set_colorkey(BLACK)
+        
 
     def update(self,horizontal_blocks,vertical_blocks):
         if not self.explosion:
@@ -109,6 +114,15 @@ class Player(pygame.sprite.Sprite):
         if self.change_y != 0:
             self.image = pygame.transform.rotate(self.player_image,270)
         self.change_y = 0
+
+    #Calculate if Pacman is in an intersection
+    def in_intersection(self):
+        intersect = enemies.get_intersection_position()
+        distances = [dist(self.rect.topleft, x) for x in intersect]
+        if(any(x <= 3 for x in distances)):
+            return 1
+        else: 
+            return 0
 
 
 

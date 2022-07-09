@@ -129,12 +129,12 @@ class Game(object):
             # When the block_hit_list contains one sprite that means that player hit a dot
             if len(block_hit_list) > 0:
                 # Here will be the sound effect
-                self.pacman_sound.play()
+                #self.pacman_sound.play()
                 self.score += 1
             block_hit_list = pygame.sprite.spritecollide(self.player,self.enemies,False)
             if len(block_hit_list) > 0:
                 self.player.explosion = True
-                self.game_over_sound.play()
+                #self.game_over_sound.play()
             self.game_over = self.player.game_over
             self.enemies.update(self.horizontal_blocks,self.vertical_blocks)
            # tkMessageBox.showinfo("GAME OVER!","Final Score = "+(str)(GAME.score))    

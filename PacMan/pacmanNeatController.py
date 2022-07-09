@@ -40,8 +40,7 @@ def calc_corridor(x,y):
         return 10
     else: 
         return 0
-    
-        
+          
 class PacmanGame:
 
     def __init__(self, screen, clock):
@@ -83,15 +82,11 @@ class PacmanGame:
         """
         run = True
         
-        #net = neat.nn.FeedForwardNetwork.create(genome, config)
-        net = neat.nn.RecurrentNetwork.create(genome, config)
+        net = neat.nn.FeedForwardNetwork.create(genome, config)
+        #net = neat.nn.RecurrentNetwork.create(genome, config)
      
         self.genome = genome
       
-        prev_score = 1
-
-        score_increased = 0
-
         start_time = time.time()
 
         while run:
@@ -101,12 +96,6 @@ class PacmanGame:
 
             score = self.game.loop(self.screen, self.clock)
 
-            if(score > prev_score):
-                prev_score = score
-                score_increased = 1
-            else:
-                score_increased = 0
-
             #Store the positions of player and enemies to pass them as inputs
             
             # positions = [x.rect.center for x in self.game.enemies]
@@ -115,11 +104,29 @@ class PacmanGame:
 
             #Store euclid distance of player and enemies to pass them as inputs and corridors for enemies and players and score_increased
 
+            #Calculate inputs
+            #Calculate distance of ghosts to the player
             distances = [euclidean(x.rect.center, self.game.player.rect.center) for x in self.game.enemies]
+
+            #Calculate corridors of ghosts and player
             corridors = [calc_corridor(x.rect.center[0], x.rect.center[1]) for x in self.game.enemies]
             corridors.append(calc_corridor(self.game.player.rect.center[0], self.game.player.rect.center[1]))
-            
-            inputs = tuple(distances) + tuple(corridors) + (score_increased,)
+
+            #Calculate distance and corridor of nearest dot
+            distance_nd, nd_coor = self.find_nearest_dot()
+            corridor_nd = calc_corridor(nd_coor[0], nd_coor[1])
+
+            #Calculate if Pacman is in an intersection
+            in_intersection = self.game.player.in_intersection()
+
+            #Calculate previous direction of Pacman
+            moving_up = 1 if self.game.player.change_y == -3 else 0
+            moving_down = 1 if self.game.player.change_y == 3 else 0
+            moving_right = 1 if self.game.player.change_x == 3 else 0
+            moving_left = 1 if self.game.player.change_x == -3 else 0
+
+            inputs = tuple(distances) + tuple(corridors) + (distance_nd,) + (corridor_nd,) + (in_intersection,) + (moving_up,) + (moving_down,) + (moving_right,) + (moving_left,)
+            print(inputs)
 
             self.move_ai(net, inputs)
 
@@ -149,8 +156,20 @@ class PacmanGame:
 
 
     def calculate_fitness(self, score, duration):
-        self.genome.raw_fitness += score - TIME_WEIGHT * (duration * (FPS/30))
-        self.genome.fitness = self.genome.raw_fitness / self.genome.evaluations
+        self.genome.fitness = score - TIME_WEIGHT * (duration * (FPS/30))
+        # self.genome.raw_fitness += score - TIME_WEIGHT * (duration * (FPS/30))
+        # self.genome.fitness = self.genome.raw_fitness / self.genome.evaluations
+
+    #Find the nearest dot to the player
+    def find_nearest_dot(self):
+        nearest_dot = None
+        nearest_distance = 9999999
+        for dot in self.game.dots_group:
+            distance = euclidean(self.game.player.rect.center,dot.rect.center)
+            if distance < nearest_distance:
+                nearest_dot = dot
+                nearest_distance = distance
+        return (nearest_distance,nearest_dot.rect.center)
 
  
             

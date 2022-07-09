@@ -47,6 +47,8 @@ class Slime(pygame.sprite.Sprite):
         self.image = pygame.image.load("Pacman\media\slime.png").convert_alpha()
         self.rect = self.image.get_rect()
         self.rect.topleft = (x,y)
+        #Get intersections
+        self.intersections = get_intersection_position()
  
 
     def update(self,horizontal_blocks,vertical_blocks):
@@ -61,7 +63,7 @@ class Slime(pygame.sprite.Sprite):
         elif self.rect.top > SCREEN_HEIGHT:
             self.rect.bottom = 0
 
-        if self.rect.topleft in self.get_intersection_position():
+        if self.rect.topleft in self.intersections:
             direction = random.choice(("left","right","up","down"))
             if direction == "left" and self.change_x == 0:
                 self.change_x = -2
@@ -77,14 +79,14 @@ class Slime(pygame.sprite.Sprite):
                 self.change_y = 2
                 
 
-    def get_intersection_position(self):
-        items = []
-        for i,row in enumerate(enviroment()):
-            for j,item in enumerate(row):
-                if item == 3:
-                    items.append((j*32,i*32))
+def get_intersection_position():
+    items = []
+    for i,row in enumerate(enviroment()):
+        for j,item in enumerate(row):
+            if item == 3:
+                items.append((j*32,i*32))
 
-        return items
+    return items
     
         
 def enviroment():
