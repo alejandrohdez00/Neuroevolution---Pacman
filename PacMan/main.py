@@ -29,18 +29,20 @@ def eval_genomes(genomes, config):
 
 
 def run_neat(config):
-    #p = neat.Checkpointer.restore_checkpoint('.\Third model\checkpoint - 199')
-    p = neat.Population(config)
+    p = neat.Checkpointer.restore_checkpoint('.\Seventh model\checkpoint - 29')
+    #p = neat.Population(config)
     p.add_reporter(neat.StdOutReporter(True))
     stats = neat.StatisticsReporter()
     p.add_reporter(stats)
-    p.add_reporter(neat.Checkpointer(generation_interval=10, time_interval_seconds=None, filename_prefix = ".\Sixth model\checkpoint - "))
+    p.add_reporter(neat.Checkpointer(generation_interval=10, time_interval_seconds=None, filename_prefix = ".\Seventh model\checkpoint - "))
 
-    winner = p.run(eval_genomes, 200)
+    winner = p.run(eval_genomes, 30)
 
-    node_names = {-1: "GHOST1 DIST", -2: "GHOST2 DIST", -3: "GHOST3 DIST", -4: "GHOST4 DIST", -5: "GHOST5 DIST", -6: "GHOST6 DIST", -7: "GHOST7 DIST", -8: "GHOST8 DIST", -9: "GHOST1 CORR", -10: "GHOST2 CORR", 
-    -11: "GHOST3 CORR", -12: "GHOST4 CORR", -13: "GHOST5 CORR", -14: "GHOST6 CORR", -15: "GHOST7 CORR", -16: "GHOST8 CORR", -17: "PACMAN CORR", -18: "ND DIST", -19: "ND CORR", -20: "IN_INTERS", -21: "MOVING UP", 
-    -22: "MOVING DOWN", -23: "MOVING RIGHT", -24: "MOVING LEFT", 0: "UP", 1: "DOWN", 2: "RIGHT", 3: "LEFT"}
+    # node_names = {-1: "GHOST1 DIST", -2: "GHOST2 DIST", -3: "GHOST3 DIST", -4: "GHOST4 DIST", -5: "GHOST5 DIST", -6: "GHOST6 DIST", -7: "GHOST7 DIST", -8: "GHOST8 DIST", -9: "GHOST1 CORR", -10: "GHOST2 CORR", 
+    # -11: "GHOST3 CORR", -12: "GHOST4 CORR", -13: "GHOST5 CORR", -14: "GHOST6 CORR", -15: "GHOST7 CORR", -16: "GHOST8 CORR", -17: "PACMAN CORR", -18: "ND DIST", -19: "ND CORR", -20: "IN_INTERS", -21: "MOVING UP", 
+    # -22: "MOVING DOWN", -23: "MOVING RIGHT", -24: "MOVING LEFT", 0: "UP", 1: "DOWN", 2: "RIGHT", 3: "LEFT"}
+
+    node_names = {-1: "PACMAN CORR", -2: "ND CORR", -3: "ND DIST", -4: "IN_INTERS", -5: "MOVING UP", -6: "MOVING DOWN", -7: "MOVING RIGHT", -8: "MOVING LEFT", 0: "UP", 1: "DOWN", 2: "RIGHT", 3: "LEFT"}
     
     #Visualize winner
     vis.draw_net(config, winner, True, prune_unused=True, node_names = node_names)
@@ -51,7 +53,7 @@ def run_neat(config):
         pickle.dump(winner, f)
 
 def test_best_network(config):
-        with open(".\First model\\best.pickle", "rb") as f:
+        with open("best.pickle", "rb") as f:
             winner = pickle.load(f)
         winner_net = neat.nn.FeedForwardNetwork.create(winner, config)
 
@@ -72,5 +74,5 @@ if __name__ == '__main__':
                          neat.DefaultSpeciesSet, neat.DefaultStagnation,
                          config_path)
 
-    run_neat(config)
-    #test_best_network(config)
+    #run_neat(config)
+    test_best_network(config)

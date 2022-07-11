@@ -2,8 +2,9 @@ import pygame
 import enemies
 from math import dist
 
-SCREEN_WIDTH = 800
+SCREEN_WIDTH = 780
 SCREEN_HEIGHT = 576
+FPS = 300
 
 # Define some colors
 BLACK = (0,0,0)
@@ -77,9 +78,9 @@ class Player(pygame.sprite.Sprite):
                 self.image = self.move_up_animation.get_current_image()
         else:
             if self.explosion_animation.index == self.explosion_animation.get_length() -1:
-                pygame.time.wait(500)
+                #pygame.time.wait(500)
                 self.game_over = True
-            self.explosion_animation.update(12)
+            self.explosion_animation.update(300)
             self.image = self.explosion_animation.get_current_image()
             
 
