@@ -163,10 +163,10 @@ class Animation(object):
     def get_length(self):
         return len(self.image_list)
 
-    def update(self,fps=30):
-        step = 30 // fps
-        l = range(1,30,step)
-        if self.clock == 30:
+    def update(self,fps=300):
+        step = 300 // fps
+        l = range(1,300,step)
+        if self.clock == 300:
             self.clock = 1
         else:
             self.clock += 1
