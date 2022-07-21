@@ -4,7 +4,8 @@ import random
 import pickle
 import neat
 from neat.graphs import feed_forward_layers
-from neat.graphs import feed_forward_layers_complete
+from numpy import product
+
 
 
 class NeuralNetworkVis(Scene):
@@ -139,9 +140,11 @@ class NeuralNetworkMobject(VGroup):
     # Helper method for constructor
     def add_edges(self):
         self.edge_groups = VGroup()
+
         for l1, l2 in zip(self.layers[:-1], self.layers[1:]):
             edge_group = VGroup()
-            for n1, n2 in it.product(l1.neurons, l2.neurons):
+            #for n1, n2 in it.product(l1.neurons, l2.neurons): #This is for full_nodirect
+            for n1, n2 in zip(l1.neurons, l2.neurons):
                 edge = self.get_edge(n1, n2)
                 edge_group.add(edge)
                 n1.edges_out.add(edge)
