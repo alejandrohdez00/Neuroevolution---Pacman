@@ -97,7 +97,7 @@ class PacmanGame:
 
             #inputs = tuple(distances) + tuple(corridors) + (distance_nd,) + (corridor_nd,) + (in_intersection,) + (moving_up,) + (moving_down,) + (moving_right,) + (moving_left,)
             inputs = tuple(distances) + tuple(corridors) + (corridor_nd, distance_nd, in_intersection, moving_up, moving_down, moving_right, moving_left)
-
+            
             self.move_ai(net, inputs)
 
             pygame.display.update()
@@ -166,7 +166,7 @@ class PacmanGame:
                 for enemy in self.game.enemies:
                     corridors.append(calc_corridor(enemy.rect.center[0], enemy.rect.center[1]))
                 for i in range(8 - self.game.enemies.__len__()):
-                    distances.append(0)
+                    corridors.append(0)
 
             #Calculate corridors of ghosts and player
             corridors.append(calc_corridor(self.game.player.rect.center[0], self.game.player.rect.center[1]))
@@ -186,7 +186,7 @@ class PacmanGame:
 
             #inputs = tuple(distances) + tuple(corridors) + (distance_nd,) + (corridor_nd,) + (in_intersection,) + (moving_up,) + (moving_down,) + (moving_right,) + (moving_left,)
             inputs = tuple(distances) + tuple(corridors) + (corridor_nd, distance_nd, in_intersection, moving_up, moving_down, moving_right, moving_left)
-            
+            print(inputs)
             self.move_ai(net, inputs)
 
             pygame.display.update()
