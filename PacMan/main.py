@@ -29,17 +29,17 @@ def eval_genomes(genomes, config):
 
 
 def run_neat(config):
-    p = neat.Checkpointer.restore_checkpoint('.\Seventh model complete\checkpoint - 99')
+    p = neat.Checkpointer.restore_checkpoint('.\Model dist_corr\Model without ghosts\checkpoints\checkpoint - 199')
     #p = neat.Population(config)
     p.add_reporter(neat.StdOutReporter(True))
     stats = neat.StatisticsReporter()
     p.add_reporter(stats)
-    p.add_reporter(neat.Checkpointer(generation_interval=10, time_interval_seconds=None, filename_prefix = ".\Seventh model complete\checkpoint - "))
+    p.add_reporter(neat.Checkpointer(generation_interval=10, time_interval_seconds=None, filename_prefix = ".\Model dist_corr\checkpoint - "))
 
     winner = p.run(eval_genomes, 200)
 
     node_names = {-1: "GHOST1 DIST", -2: "GHOST2 DIST", -3: "GHOST3 DIST", -4: "GHOST4 DIST", -5: "GHOST5 DIST", -6: "GHOST6 DIST", -7: "GHOST7 DIST", -8: "GHOST8 DIST", -9: "GHOST1 CORR", -10: "GHOST2 CORR", 
-    -11: "GHOST3 CORR", -12: "GHOST4 CORR", -13: "GHOST5 CORR", -14: "GHOST6 CORR", -15: "GHOST7 CORR", -16: "GHOST8 CORR", -17: "PACMAN CORR", -18: "ND DIST", -19: "ND CORR", -20: "IN_INTERS", -21: "MOVING UP", 
+    -11: "GHOST3 CORR", -12: "GHOST4 CORR", -13: "GHOST5 CORR", -14: "GHOST6 CORR", -15: "GHOST7 CORR", -16: "GHOST8 CORR", -17: "PACMAN CORR", -18: "ND CORR", -19: "ND DIST", -20: "IN_INTERS", -21: "MOVING UP", 
     -22: "MOVING DOWN", -23: "MOVING RIGHT", -24: "MOVING LEFT", 0: "UP", 1: "DOWN", 2: "RIGHT", 3: "LEFT"}
     
     #Visualize winner

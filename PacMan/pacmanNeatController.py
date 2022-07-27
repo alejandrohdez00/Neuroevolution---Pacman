@@ -186,7 +186,7 @@ class PacmanGame:
 
             #inputs = tuple(distances) + tuple(corridors) + (distance_nd,) + (corridor_nd,) + (in_intersection,) + (moving_up,) + (moving_down,) + (moving_right,) + (moving_left,)
             inputs = tuple(distances) + tuple(corridors) + (corridor_nd, distance_nd, in_intersection, moving_up, moving_down, moving_right, moving_left)
-            print(inputs)
+            
             self.move_ai(net, inputs)
 
             pygame.display.update()
