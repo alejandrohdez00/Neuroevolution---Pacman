@@ -109,6 +109,36 @@ class PacmanGame:
         inputs = tuple(chain(*positions)) + (in_intersection, moving_up, moving_down, moving_right, moving_left)
         return inputs
 
+    def obtain_x_y_norm_inputs(self):
+        #Store the positions of player and enemies to pass them as inputs
+        positions = []
+        if self.game.enemies.__len__() <= 8:
+            for enemy in self.game.enemies:
+                #normalize x and y
+                positions.append(self.normalize_position(enemy.rect.center))
+            for i in range(8 - self.game.enemies.__len__()):
+                positions.append((-1,-1))
+        
+        #normalize x and y of player
+        positions.append(self.normalize_position(self.game.player.rect.center))
+
+        #Calc x, y for nearest dot
+        distance_nd, nd_coor = self.find_nearest_dot()
+
+        positions.append(self.normalize_position(nd_coor))
+
+        #Calculate if Pacman is in an intersection
+        in_intersection = self.game.player.in_intersection()
+
+        #Calculate previous direction of Pacman
+        moving_up = 1 if self.game.player.change_y == -3 else 0
+        moving_down = 1 if self.game.player.change_y == 3 else 0
+        moving_right = 1 if self.game.player.change_x == 3 else 0
+        moving_left = 1 if self.game.player.change_x == -3 else 0
+
+        inputs = tuple(chain(*positions)) + (in_intersection, moving_up, moving_down, moving_right, moving_left)
+        return inputs
+
     def test_ai(self, net, config):
         """
         Train the AI by passing a neural networks and the NEAt config object.
@@ -124,7 +154,7 @@ class PacmanGame:
 
             self.game.loop(self.screen, self.clock)
 
-            inputs = self.obtain_x_y_inputs()
+            inputs = self.obtain_x_y_norm_inputs()
             self.move_ai(net, inputs)
 
             pygame.display.update()
@@ -169,14 +199,14 @@ class PacmanGame:
                 prev_score = score
                 count = 0
 
-            inputs = self.obtain_x_y_inputs()
-            print(inputs)
+            inputs = self.obtain_x_y_norm_inputs()
+            
             self.move_ai(net, inputs)
 
             pygame.display.update()
 
             duration = time.time() - start_time
-            if score >= initial_len or self.game.game_over or duration_no_score > 1.5:
+            if score >= initial_len or self.game.game_over or duration_no_score > 0.75:
                 self.calculate_fitness(score, duration)
                 break
 
@@ -216,6 +246,13 @@ class PacmanGame:
                     nearest_dot = dot
                     nearest_distance = distance
             return (nearest_distance,nearest_dot.rect.center)
+
+    #Normalize position 
+    def normalize_position(self, position):
+        x,y = position
+        x = x/SCREEN_WIDTH
+        y = y/SCREEN_HEIGHT
+        return (x,y)
 
  
             
