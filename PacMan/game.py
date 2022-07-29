@@ -47,8 +47,8 @@ class Game(object):
                     self.vertical_blocks.add(Block(j*32+8,i*32+8,BLACK,16,16))
         # Create the enemies
         self.enemies = pygame.sprite.Group()
-        self.enemies.add(Slime(32,224,0,2))
-        # self.enemies.add(Slime(288,96,0,2))
+        #self.enemies.add(Slime(32,224,0,2))
+        #self.enemies.add(Slime(288,96,0,2))
         # self.enemies.add(Slime(288,320,0,-2))
         # self.enemies.add(Slime(544,128,0,2))
         # self.enemies.add(Slime(160,64,2,0))
