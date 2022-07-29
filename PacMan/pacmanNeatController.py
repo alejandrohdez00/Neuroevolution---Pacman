@@ -48,6 +48,67 @@ class PacmanGame:
         self.screen = screen
         self.clock = clock
 
+    def obtain_dist_corr_inputs(self):
+        distances = []
+        if self.game.enemies.__len__() <= 8:
+            for enemy in self.game.enemies:
+                distances.append(euclidean(enemy.rect.center, self.game.player.rect.center))
+            for i in range(8 - self.game.enemies.__len__()):
+                distances.append(9999999999)
+                
+        corridors = []
+        if self.game.enemies.__len__() <= 8:
+            for enemy in self.game.enemies:
+                    corridors.append(calc_corridor(enemy.rect.center[0], enemy.rect.center[1]))
+            for i in range(8 - self.game.enemies.__len__()):
+                    corridors.append(0)
+
+        #Calculate corridor of player
+        corridors.append(calc_corridor(self.game.player.rect.center[0], self.game.player.rect.center[1]))
+
+        #Calculate distance and corridor of nearest dot
+        distance_nd, nd_coor = self.find_nearest_dot()
+        corridor_nd = calc_corridor(nd_coor[0], nd_coor[1])
+
+        #Calculate if Pacman is in an intersection
+        in_intersection = self.game.player.in_intersection()
+
+        #Calculate previous direction of Pacman
+        moving_up = 1 if self.game.player.change_y == -3 else 0
+        moving_down = 1 if self.game.player.change_y == 3 else 0
+        moving_right = 1 if self.game.player.change_x == 3 else 0
+        moving_left = 1 if self.game.player.change_x == -3 else 0
+
+        inputs = tuple(distances) + tuple(corridors) + (corridor_nd, distance_nd, in_intersection, moving_up, moving_down, moving_right, moving_left)
+        return inputs
+
+    def obtain_x_y_inputs(self):
+        #Store the positions of player and enemies to pass them as inputs
+        positions = []
+        if self.game.enemies.__len__() <= 8:
+            for enemy in self.game.enemies:
+                positions.append(enemy.rect.center)
+            for i in range(8 - self.game.enemies.__len__()):
+                positions.append((0,0))
+        positions.append(self.game.player.rect.center)
+
+        #Calc x, y for nearest dot
+        distance_nd, nd_coor = self.find_nearest_dot()
+
+        positions.append(nd_coor)
+
+        #Calculate if Pacman is in an intersection
+        in_intersection = self.game.player.in_intersection()
+
+        #Calculate previous direction of Pacman
+        moving_up = 1 if self.game.player.change_y == -3 else 0
+        moving_down = 1 if self.game.player.change_y == 3 else 0
+        moving_right = 1 if self.game.player.change_x == 3 else 0
+        moving_left = 1 if self.game.player.change_x == -3 else 0
+
+        inputs = tuple(chain(*positions)) + (in_intersection, moving_up, moving_down, moving_right, moving_left)
+        return inputs
+
     def test_ai(self, net, config):
         """
         Train the AI by passing a neural networks and the NEAt config object.
@@ -63,41 +124,7 @@ class PacmanGame:
 
             self.game.loop(self.screen, self.clock)
 
-            #Store the positions of player and enemies to pass them as inputs
-            
-            distances = []
-            if self.game.enemies.__len__() <= 8:
-                for enemy in self.game.enemies:
-                    distances.append(euclidean(enemy.rect.center, self.game.player.rect.center))
-                for i in range(8 - self.game.enemies.__len__()):
-                    distances.append(9999999999)
-                
-            corridors = []
-            if self.game.enemies.__len__() <= 8:
-                for enemy in self.game.enemies:
-                    corridors.append(calc_corridor(enemy.rect.center[0], enemy.rect.center[1]))
-                for i in range(8 - self.game.enemies.__len__()):
-                    distances.append(0)
-
-            #Calculate corridors of ghosts and player
-            corridors.append(calc_corridor(self.game.player.rect.center[0], self.game.player.rect.center[1]))
-
-            #Calculate distance and corridor of nearest dot
-            distance_nd, nd_coor = self.find_nearest_dot()
-            corridor_nd = calc_corridor(nd_coor[0], nd_coor[1])
-
-            #Calculate if Pacman is in an intersection
-            in_intersection = self.game.player.in_intersection()
-
-            #Calculate previous direction of Pacman
-            moving_up = 1 if self.game.player.change_y == -3 else 0
-            moving_down = 1 if self.game.player.change_y == 3 else 0
-            moving_right = 1 if self.game.player.change_x == 3 else 0
-            moving_left = 1 if self.game.player.change_x == -3 else 0
-
-            #inputs = tuple(distances) + tuple(corridors) + (distance_nd,) + (corridor_nd,) + (in_intersection,) + (moving_up,) + (moving_down,) + (moving_right,) + (moving_left,)
-            inputs = tuple(distances) + tuple(corridors) + (corridor_nd, distance_nd, in_intersection, moving_up, moving_down, moving_right, moving_left)
-            
+            inputs = self.obtain_x_y_inputs()
             self.move_ai(net, inputs)
 
             pygame.display.update()
@@ -142,51 +169,8 @@ class PacmanGame:
                 prev_score = score
                 count = 0
 
-                
-
-            #Store the positions of player and enemies to pass them as inputs
-            
-            # positions = [x.rect.center for x in self.game.enemies]
-            # positions.append(self.game.player.rect.center)
-            # inputs = tuple(chain(*positions)) + (score_increased,)
-
-            #Store euclid distance of player and enemies to pass them as inputs and corridors for enemies and players and score_increased
-
-            #Calculate inputs
-            #Calculate distance of ghosts to the player
-            distances = []
-            if self.game.enemies.__len__() <= 8:
-                for enemy in self.game.enemies:
-                    distances.append(euclidean(enemy.rect.center, self.game.player.rect.center))
-                for i in range(8 - self.game.enemies.__len__()):
-                    distances.append(9999999999)
-                
-            corridors = []
-            if self.game.enemies.__len__() <= 8:
-                for enemy in self.game.enemies:
-                    corridors.append(calc_corridor(enemy.rect.center[0], enemy.rect.center[1]))
-                for i in range(8 - self.game.enemies.__len__()):
-                    corridors.append(0)
-
-            #Calculate corridors of ghosts and player
-            corridors.append(calc_corridor(self.game.player.rect.center[0], self.game.player.rect.center[1]))
-
-            #Calculate distance and corridor of nearest dot
-            distance_nd, nd_coor = self.find_nearest_dot()
-            corridor_nd = calc_corridor(nd_coor[0], nd_coor[1])
-
-            #Calculate if Pacman is in an intersection
-            in_intersection = self.game.player.in_intersection()
-
-            #Calculate previous direction of Pacman
-            moving_up = 1 if self.game.player.change_y == -3 else 0
-            moving_down = 1 if self.game.player.change_y == 3 else 0
-            moving_right = 1 if self.game.player.change_x == 3 else 0
-            moving_left = 1 if self.game.player.change_x == -3 else 0
-
-            #inputs = tuple(distances) + tuple(corridors) + (distance_nd,) + (corridor_nd,) + (in_intersection,) + (moving_up,) + (moving_down,) + (moving_right,) + (moving_left,)
-            inputs = tuple(distances) + tuple(corridors) + (corridor_nd, distance_nd, in_intersection, moving_up, moving_down, moving_right, moving_left)
-            
+            inputs = self.obtain_x_y_inputs()
+            print(inputs)
             self.move_ai(net, inputs)
 
             pygame.display.update()
@@ -203,7 +187,7 @@ class PacmanGame:
         
         output = net.activate(positions)
         decision = output.index(max(output))
-
+        
         if decision == 0:  # Move up
             self.game.player.move_up()
         elif decision == 1:  # Move down
