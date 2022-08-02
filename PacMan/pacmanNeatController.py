@@ -146,18 +146,23 @@ class PacmanGame:
         """
         run = True
 
+        score = 0
      
         while run:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     return True
 
-            self.game.loop(self.screen, self.clock)
+            score = self.game.loop(self.screen, self.clock)
 
             inputs = self.obtain_x_y_norm_inputs()
+ 
             self.move_ai(net, inputs)
 
             pygame.display.update()
+
+            if score >= 184 or self.game.game_over:
+                return score
 
         return False
 
@@ -201,12 +206,13 @@ class PacmanGame:
 
             inputs = self.obtain_x_y_norm_inputs()
             
+            
             self.move_ai(net, inputs)
 
             pygame.display.update()
 
             duration = time.time() - start_time
-            if score >= initial_len or self.game.game_over or duration_no_score > 0.75:
+            if score >= initial_len or self.game.game_over or duration_no_score > 3:
                 self.calculate_fitness(score, duration)
                 break
 
