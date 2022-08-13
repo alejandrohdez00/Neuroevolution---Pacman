@@ -212,7 +212,7 @@ class PacmanGame:
             pygame.display.update()
 
             duration = time.time() - start_time
-            if score >= initial_len or self.game.game_over or duration_no_score > 3:
+            if score >= initial_len or self.game.game_over or duration_no_score > 5:
                 self.calculate_fitness(score, duration)
                 break
 
@@ -259,6 +259,7 @@ class PacmanGame:
         x = x/SCREEN_WIDTH
         y = y/SCREEN_HEIGHT
         return (x,y)
+
 
  
             
