@@ -1,10 +1,10 @@
 #---  Seventh model configuration ---#
 
 [NEAT]
-fitness_criterion     = mean
-fitness_threshold     = 185
+fitness_criterion     = max
+fitness_threshold     = 184
 pop_size              = 150
-reset_on_extinction   = False
+reset_on_extinction   = True
 
 [DefaultGenome]
 # node activation options
@@ -31,7 +31,7 @@ compatibility_disjoint_coefficient = 1.0
 compatibility_weight_coefficient   = 0.6
 
 # connection add/remove rates
-conn_add_prob           = 0.7
+conn_add_prob           = 0.5
 conn_delete_prob        = 0.5
 
 # connection enable options
@@ -39,11 +39,11 @@ enabled_default         = True
 enabled_mutate_rate     = 0.01
 
 feed_forward            = True
-initial_connection      = unconnected
+initial_connection      = full_direct
 
 # node add/remove rates
-node_add_prob           = 0.2
-node_delete_prob        = 0.2
+node_add_prob           = 0.3
+node_delete_prob        = 0.3
 
 # network parameters
 num_hidden              = 0
@@ -72,10 +72,10 @@ weight_replace_rate     = 0.1
 compatibility_threshold = 3.0 
 
 [DefaultStagnation]
-species_fitness_func = mean
+species_fitness_func = max
 max_stagnation       = 20
-species_elitism      = 2
+species_elitism      = 0
 
 [DefaultReproduction]
-elitism            = 2
-survival_threshold = 0.3
+elitism            = 1
+survival_threshold = 0.4
