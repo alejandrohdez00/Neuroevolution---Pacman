@@ -29,14 +29,14 @@ def eval_genomes(genomes, config):
 
 
 def run_neat(config):
-    p = neat.Checkpointer.restore_checkpoint('.\\Model x_y\\Model with 2 ghosts\\0 - 200\\checkpoint - 560x', config)
-    #p = neat.Population(config)
+    #p = neat.Checkpointer.restore_checkpoint('.\Model x_y_det\checkpoint - 199', config)
+    p = neat.Population(config)
     p.add_reporter(neat.StdOutReporter(True))
     stats = neat.StatisticsReporter()
     p.add_reporter(stats)
-    p.add_reporter(neat.Checkpointer(generation_interval=10, time_interval_seconds=None, filename_prefix = ".\Model x_y\checkpoint - "))
+    p.add_reporter(neat.Checkpointer(generation_interval=50, time_interval_seconds=None, filename_prefix = ".\Model x_y_det\checkpoint - "))
 
-    winner = p.run(eval_genomes, 300)
+    winner = p.run(eval_genomes, 1000)
     
     #node names for dist_corr inputs
     # node_names = {-1: "GHOST1 DIST", -2: "GHOST2 DIST", -3: "GHOST3 DIST", -4: "GHOST4 DIST", -5: "GHOST5 DIST", -6: "GHOST6 DIST", -7: "GHOST7 DIST", -8: "GHOST8 DIST", -9: "GHOST1 CORR", -10: "GHOST2 CORR", 
@@ -80,7 +80,7 @@ if __name__ == '__main__':
 
     #run_neat(config)
     scores = []
-    for i in range(100):
+    for i in range(1):
         scores.append(test_best_network(config))
     print(scores)
     print(sum(scores)/len(scores))
