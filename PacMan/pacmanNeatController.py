@@ -1,3 +1,4 @@
+from re import I
 import pygame
 from game import Game
 import neat
@@ -50,9 +51,12 @@ class PacmanGame:
 
     def obtain_dist_corr_inputs(self):
         distances = []
+        max_dist = dist((0,0), (SCREEN_WIDTH, SCREEN_HEIGHT))
         if self.game.enemies.__len__() <= 8:
             for enemy in self.game.enemies:
-                distances.append(euclidean(enemy.rect.center, self.game.player.rect.center))
+                #normalize distance
+                norm_distance = euclidean(enemy.rect.center, self.game.player.rect.center) / max_dist
+                distances.append(norm_distance)
             for i in range(8 - self.game.enemies.__len__()):
                 distances.append(9999999999)
                 
@@ -131,12 +135,14 @@ class PacmanGame:
         in_intersection = self.game.player.in_intersection()
 
         #Calculate previous direction of Pacman
-        moving_up = 1 if self.game.player.change_y == -3 else 0
-        moving_down = 1 if self.game.player.change_y == 3 else 0
-        moving_right = 1 if self.game.player.change_x == 3 else 0
-        moving_left = 1 if self.game.player.change_x == -3 else 0
+        # moving_up = 1 if self.game.player.change_y == -3 else 0
+        # moving_down = 1 if self.game.player.change_y == 3 else 0
+        # moving_right = 1 if self.game.player.change_x == 3 else 0
+        # moving_left = 1 if self.game.player.change_x == -3 else 0
 
-        inputs = tuple(chain(*positions)) + (in_intersection, moving_up, moving_down, moving_right, moving_left)
+        #inputs = tuple(chain(*positions)) + (in_intersection, moving_up, moving_down, moving_right, moving_left)
+        inputs = tuple(chain(*positions)) + (in_intersection,)
+
         return inputs
 
     def test_ai(self, net, config):
@@ -206,13 +212,12 @@ class PacmanGame:
 
             inputs = self.obtain_x_y_norm_inputs()
             
-            
             self.move_ai(net, inputs)
 
             pygame.display.update()
 
             duration = time.time() - start_time
-            if score >= initial_len or self.game.game_over or duration_no_score > 5:
+            if score >= initial_len or self.game.game_over or duration_no_score > 10:
                 self.calculate_fitness(score, duration)
                 break
 
