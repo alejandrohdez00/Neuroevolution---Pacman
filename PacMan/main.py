@@ -44,8 +44,11 @@ def run_neat(config):
     # -22: "MOVING DOWN", -23: "MOVING RIGHT", -24: "MOVING LEFT", 0: "UP", 1: "DOWN", 2: "RIGHT", 3: "LEFT"}
 
     #node names for x_y inputs
+    # node_names = {-1: "GHOST1 X", -2: "GHOST1 Y", -3: "GHOST2 X", -4: "GHOST2 Y", -5: "GHOST3 X", -6: "GHOST3 Y", -7: "GHOST4 X", -8: "GHOST4 Y", -9: "GHOST5 X", -10: "GHOST5 Y", -11: "GHOST6 X", -12: "GHOST6 Y",
+    # -13: "GHOST7 X", -14: "GHOST7 Y", -15: "GHOST8 X", -16: "GHOST8 Y", -17: "PACMAN X", -18: "PACMAN Y", -19: "ND X", -20: "ND Y", -21: "IN_INTERS", -22: "MOVING UP", -23: "MOVING DOWN", -24: "MOVING RIGHT", -25: "MOVING LEFT", 0: "UP", 1: "DOWN", 2: "RIGHT", 3: "LEFT"}
+    
     node_names = {-1: "GHOST1 X", -2: "GHOST1 Y", -3: "GHOST2 X", -4: "GHOST2 Y", -5: "GHOST3 X", -6: "GHOST3 Y", -7: "GHOST4 X", -8: "GHOST4 Y", -9: "GHOST5 X", -10: "GHOST5 Y", -11: "GHOST6 X", -12: "GHOST6 Y",
-    -13: "GHOST7 X", -14: "GHOST7 Y", -15: "GHOST8 X", -16: "GHOST8 Y", -17: "PACMAN X", -18: "PACMAN Y", -19: "ND X", -20: "ND Y", -21: "IN_INTERS", -22: "MOVING UP", -23: "MOVING DOWN", -24: "MOVING RIGHT", -25: "MOVING LEFT", 0: "UP", 1: "DOWN", 2: "RIGHT", 3: "LEFT"}
+    -13: "GHOST7 X", -14: "GHOST7 Y", -15: "GHOST8 X", -16: "GHOST8 Y", -17: "PACMAN X", -18: "PACMAN Y", -19: "ND X", -20: "ND Y", -21: "IN_INTERS", 0: "UP", 1: "DOWN", 2: "RIGHT", 3: "LEFT"}
     
     #Visualize winner
     vis.draw_net(config, winner, True, prune_unused=True, node_names = node_names)
@@ -78,9 +81,9 @@ if __name__ == '__main__':
                          neat.DefaultSpeciesSet, neat.DefaultStagnation,
                          config_path)
 
-    #run_neat(config)
-    scores = []
-    for i in range(1):
-        scores.append(test_best_network(config))
-    print(scores)
-    print(sum(scores)/len(scores))
+    run_neat(config)
+    # scores = []
+    # for i in range(1):
+    #     scores.append(test_best_network(config))
+    # print(scores)
+    # print(sum(scores)/len(scores))

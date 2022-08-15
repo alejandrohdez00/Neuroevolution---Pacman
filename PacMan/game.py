@@ -52,9 +52,9 @@ class Game(object):
         self.enemies.add(SlimeEURev(288,320,0,-2, self.player))
         self.enemies.add(SlimeMH(544,128,0,2, self.player))
         self.enemies.add(SlimeMH(160,64,2,0, self.player))
-        # self.enemies.add(Slime(448,64,-2,0, self.player))
-        # self.enemies.add(Slime(640,448,2,0, self.player))
-        # self.enemies.add(Slime(448,320,2,0, self.player))
+        self.enemies.add(SlimeEURev(448,64,-2,0, self.player))
+        self.enemies.add(SlimeEURev(640,448,2,0, self.player))
+        self.enemies.add(SlimeMH(448,320,2,0, self.player))
         # Add the dots inside the game
         for i, row in enumerate(enviroment()):
             for j, item in enumerate(row):
