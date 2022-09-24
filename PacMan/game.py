@@ -10,7 +10,7 @@ import time
 
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 576
-FPS = 60
+FPS = 600
 
 pygame.init()
 
