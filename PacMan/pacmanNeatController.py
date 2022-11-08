@@ -1,10 +1,9 @@
-from re import I
+
 import pygame
 from game import Game
 import neat
 import time
 from itertools import chain
-import pickle
 from math import dist
 
 FPS = 600
@@ -41,6 +40,14 @@ def calc_corridor(x,y):
         return 10
     else: 
         return 0
+
+
+#Normalize position 
+def normalize_position(self, position):
+    x,y = position
+    x = x/SCREEN_WIDTH
+    y = y/SCREEN_HEIGHT
+    return (x,y)
           
 class PacmanGame:
 
@@ -49,6 +56,7 @@ class PacmanGame:
         self.screen = screen
         self.clock = clock
 
+    #Inputs as distance and corridor
     def obtain_dist_corr_inputs(self):
         distances = []
         max_dist = dist((0,0), (SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -86,33 +94,7 @@ class PacmanGame:
         inputs = tuple(distances) + tuple(corridors) + (corridor_nd, distance_nd, in_intersection, moving_up, moving_down, moving_right, moving_left)
         return inputs
 
-    def obtain_x_y_inputs(self):
-        #Store the positions of player and enemies to pass them as inputs
-        positions = []
-        if self.game.enemies.__len__() <= 8:
-            for enemy in self.game.enemies:
-                positions.append(enemy.rect.center)
-            for i in range(8 - self.game.enemies.__len__()):
-                positions.append((0,0))
-        positions.append(self.game.player.rect.center)
-
-        #Calc x, y for nearest dot
-        distance_nd, nd_coor = self.find_nearest_dot()
-
-        positions.append(nd_coor)
-
-        #Calculate if Pacman is in an intersection
-        in_intersection = self.game.player.in_intersection()
-
-        #Calculate previous direction of Pacman
-        moving_up = 1 if self.game.player.change_y == -3 else 0
-        moving_down = 1 if self.game.player.change_y == 3 else 0
-        moving_right = 1 if self.game.player.change_x == 3 else 0
-        moving_left = 1 if self.game.player.change_x == -3 else 0
-
-        inputs = tuple(chain(*positions)) + (in_intersection, moving_up, moving_down, moving_right, moving_left)
-        return inputs
-
+    #Obtain inputs as x and y normalized
     def obtain_x_y_norm_inputs(self):
         #Store the positions of player and enemies to pass them as inputs
         positions = []
@@ -134,17 +116,13 @@ class PacmanGame:
         #Calculate if Pacman is in an intersection
         in_intersection = self.game.player.in_intersection()
 
-        #Calculate previous direction of Pacman
-        # moving_up = 1 if self.game.player.change_y == -3 else 0
-        # moving_down = 1 if self.game.player.change_y == 3 else 0
-        # moving_right = 1 if self.game.player.change_x == 3 else 0
-        # moving_left = 1 if self.game.player.change_x == -3 else 0
-
-        #inputs = tuple(chain(*positions)) + (in_intersection, moving_up, moving_down, moving_right, moving_left)
         inputs = tuple(chain(*positions)) + (in_intersection,)
 
         return inputs
 
+
+
+    #Test the current genome
     def test_ai(self, net, config):
         """
         Train the AI by passing a neural networks and the NEAt config object.
@@ -172,6 +150,9 @@ class PacmanGame:
 
         return False
 
+
+
+    #Train function
     def train_ai(self, genome, config):
         """
         Train the AI by passing a neural networks and the NEAt config object.
@@ -199,6 +180,7 @@ class PacmanGame:
 
             score = self.game.loop(self.screen, self.clock)
 
+            #Calculate the time without scoring
             if score == prev_score:
                 if count == 0:
                     start_time_no_score = time.time()
@@ -223,9 +205,8 @@ class PacmanGame:
 
         return False
 
-
-    def move_ai(self, net, positions):
-        
+    #Move the player
+    def move_ai(self, net, positions): 
         output = net.activate(positions)
         decision = output.index(max(output))
         
@@ -240,9 +221,12 @@ class PacmanGame:
 
 
     def calculate_fitness(self, score, duration):
+        #Taking into account the duration of the game
         #self.genome.fitness = score - TIME_WEIGHT * (duration * (self.clock.get_fps()/30))
-        # self.genome.fitness = self.genome.raw_fitness / self.genome.evaluations
+
+        #Only taking into account the score
         self.genome.fitness = score
+
 
     #Find the nearest dot to the player
     def find_nearest_dot(self):
@@ -258,12 +242,7 @@ class PacmanGame:
                     nearest_distance = distance
             return (nearest_distance,nearest_dot.rect.center)
 
-    #Normalize position 
-    def normalize_position(self, position):
-        x,y = position
-        x = x/SCREEN_WIDTH
-        y = y/SCREEN_HEIGHT
-        return (x,y)
+    
 
 
  

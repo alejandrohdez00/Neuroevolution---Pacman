@@ -1,3 +1,4 @@
+
 import warnings
 
 import graphviz
@@ -131,22 +132,22 @@ def draw_net(config, genome, view=False, filename=None, node_names=None, show_di
         node_colors = {}
 
     assert type(node_colors) is dict
-
+    
     node_attrs = {
         'shape': 'circle',
         'fontsize': '9',
-        'height': '0.2',
-        'width': '0.2',
+        'height': '0.1',
+        'width': '0.1',
         'bgcolor': 'black'}
 
-    dot = graphviz.Digraph(format=fmt, node_attr=node_attrs)
+    dot = graphviz.Digraph(format=fmt, node_attr=node_attrs, graph_attr={'bgcolor': 'black'})
 
     inputs = set()
     for k in config.genome_config.input_keys:
         inputs.add(k)
         name = node_names.get(k, str(k))
-        input_attrs = {'style': 'filled', 'shape': 'circle', 'fillcolor': node_colors.get(k, 'lightcoral')}
-        dot.node(name, _attributes=input_attrs)
+        input_attrs = {'style': 'filled', 'shape': 'circle', 'fillcolor': node_colors.get(k, 'red')}
+        dot.node(name, label = "",_attributes=input_attrs)
 
     outputs = set()
     for k in config.genome_config.output_keys:
@@ -154,7 +155,7 @@ def draw_net(config, genome, view=False, filename=None, node_names=None, show_di
         name = node_names.get(k, str(k))
         node_attrs = {'style': 'filled', 'fillcolor': node_colors.get(k, 'lightblue')}
 
-        dot.node(name, _attributes=node_attrs)
+        dot.node(name, label = "", _attributes=node_attrs)
 
     used_nodes = set(genome.nodes.keys())
     for n in used_nodes:
@@ -162,8 +163,8 @@ def draw_net(config, genome, view=False, filename=None, node_names=None, show_di
             continue
 
         attrs = {'style': 'filled',
-                 'fillcolor': node_colors.get(n, 'lightgreen')}
-        dot.node(str(n), _attributes=attrs)
+                 'fillcolor': node_colors.get(n, 'green')}
+        dot.node(str(n), label = "", _attributes=attrs)
 
     for cg in genome.connections.values():
         if cg.enabled or show_disabled:
@@ -173,7 +174,7 @@ def draw_net(config, genome, view=False, filename=None, node_names=None, show_di
             a = node_names.get(input, str(input))
             b = node_names.get(output, str(output))
             style = 'solid' if cg.enabled else 'dotted'
-            color = 'green' if cg.weight > 0 else 'red'
+            color = 'lightgreen' if cg.weight > 0 else 'orange'
             width = str(0.1 + abs(cg.weight / 5.0))
             dot.edge(a, b, _attributes={'style': style, 'color': color, 'penwidth': width, 'arrowhead': 'none'})
 

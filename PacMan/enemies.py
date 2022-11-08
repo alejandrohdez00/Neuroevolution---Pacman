@@ -76,7 +76,9 @@ class SlimeMH(pygame.sprite.Sprite):
             self.rect.bottom = 0
 
         if self.rect.topleft in self.intersections:
-            direction = self.best_action()
+            #Deterministic action
+            #direction = self.best_action()
+            direction = random.choice(["left","right","up","down"])
             if direction == "left" and self.change_x == 0:
                 self.change_x = -2
                 self.change_y = 0
@@ -132,7 +134,9 @@ class SlimeEURev(pygame.sprite.Sprite):
             self.rect.bottom = 0
 
         if self.rect.topleft in self.intersections:
-            direction = self.best_action()
+            #Deterministic action
+            #direction = self.best_action()
+            direction = random.choice(["left","right","up","down"])
             if direction == "left" and self.change_x == 0:
                 self.change_x = -2
                 self.change_y = 0
@@ -160,10 +164,6 @@ class SlimeEURev(pygame.sprite.Sprite):
 
         
         
-       
-        
-                
-
 def get_intersection_position():
     items = []
     for i,row in enumerate(enviroment()):

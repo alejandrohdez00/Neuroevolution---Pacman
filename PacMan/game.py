@@ -1,12 +1,9 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
+
 
 import pygame
 from player import Player
 from enemies import *
-import tkinter
-from tkinter import messagebox
-import time
+
 
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 576
@@ -182,33 +179,6 @@ class Game(object):
         # Draw the label onto the screen
         screen.blit(label,(posX,posY))
 
-    # def loop(self,screen):
-    #      # Set the current window caption
-    #     pygame.display.set_caption("PACMAN")
-    #     #Loop until the user clicks the close button.
-    #     done = False
-    #     # Used to manage how fast the screen updates
-    #     clock = pygame.time.Clock()
-        
-    #     start_time = time.time()
-    #     # -------- Main Program Loop -----------
-    #     while not done and self.score < 156:
-    #         # --- Process events (keystrokes, mouse clicks, etc)
-    #         done = self.process_events()
-    #         # --- Game logic should go here
-    #         self.run_logic()
-    #         # --- Draw the current frame
-    #         self.display_frame(screen)
-    #         # --- Limit to 30 frames per second
-    #         clock.tick(30)
-    #         #tkMessageBox.showinfo("GAME OVER!","Final Score = "+(str)(GAME.score))
-    #     # Close the window and quit.
-    #     # If you forget this line, the program will 'hang'
-    #     # on exit if running from IDLE.
-    #     end_time = time.time()
-    #     inf = (self.score, end_time - start_time)
-    #     return inf
-    #     pygame.quit()
 
     def loop(self, screen, clock):
         done = self.process_events()

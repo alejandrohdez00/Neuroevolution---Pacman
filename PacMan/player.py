@@ -4,7 +4,7 @@ from math import dist
 
 SCREEN_WIDTH = 780
 SCREEN_HEIGHT = 576
-FPS = 300
+FPS = 300 # Low FPS to make it easier to see what's going on
 
 # Define some colors
 BLACK = (0,0,0)
@@ -165,8 +165,8 @@ class Animation(object):
 
     def update(self,fps=300):
         step = 300 // fps
-        l = range(1,300,step)
-        if self.clock == 300:
+        l = range(1,30,step)
+        if self.clock == 30:
             self.clock = 1
         else:
             self.clock += 1
