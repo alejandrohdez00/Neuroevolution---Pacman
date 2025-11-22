@@ -1,7 +1,7 @@
 # Neuroevolution --- Pacman
 Neuroevolution of Augmenting Topologies (NEAT) study using Pacman enviroment. This is the code used for the development of my Bachelor's Thesis, which can be read [here](https://github.com/alejandrohdez00/Neuroevolution---Pacman/blob/master/20220908_TFG_ALEJANDRO_HERNANDEZ_ARTILES.pdf). It is written in Spanish, however, a summary in English can be found in the appendix. 
 
-![Neuroevolution-example](image-example.png)
+![Neuroevolution-example](img-example.png)
 
 (Image from video). See video for full example.
 
