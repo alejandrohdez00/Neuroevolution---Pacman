@@ -3,5 +3,5 @@ Neuroevolution of Augmenting Topologies (NEAT) study using Pacman enviroment. Th
 
 ![Neuroevolution-example](img-example.png)
 
-(Image from video). See video for full example.
+(Image from video). See [video](video.mp4) for full example.
 
